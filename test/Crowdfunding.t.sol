@@ -25,11 +25,11 @@ contract CrowdfundingFactoryTest is Test {
         description = "This is a test campaign.";
     }
 
-    function testFactoryOwner() public view {
+    function test_FactoryOwner() public view {
         assertEq(factory.owner(), deployer, "Owner should be deployer");
     }
 
-    function testCreateCampaign() public {
+    function test_CreateCampaign() public {
         vm.startPrank(user1); // Simulate user1 calling the function
         address campaignAddress = factory.createCampaign(goal, deadline, title, description);
         vm.stopPrank();
@@ -37,7 +37,7 @@ contract CrowdfundingFactoryTest is Test {
         assertTrue(campaignAddress != address(0), "Campaign should be created with a valid address");
     }
 
-    function testGetCampaigns() public {
+    function test_GetCampaigns() public {
         vm.startPrank(user1);
         address campaignAddress1 = factory.createCampaign(goal, deadline, title, description);
         address campaignAddress2 = factory.createCampaign(goal, deadline, title, description);
