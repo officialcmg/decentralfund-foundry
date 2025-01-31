@@ -7,7 +7,8 @@ import { console } from "forge-std/console.sol";
 
 contract CrowdfundingScript is Script {
     function run() external {
-        vm.startBroadcast(); // Use private key from env or CLI
+        uint256 deployerPrivateKey = vm.envUint("PRIVATE_KEY");
+        vm.startBroadcast(deployerPrivateKey); // Use private key from env or CLI
 
         CrowdfundingFactory crowdfunding = new CrowdfundingFactory();
 
