@@ -14,6 +14,8 @@ contract CampaignTest is Test {
     string title;
     string description;
 
+    receive() external payable {}
+
     function setUp() public {
         creator = address(this);
         user1 = vm.addr(1);
@@ -45,6 +47,11 @@ contract CampaignTest is Test {
         vm.deal(user1, 10 ether);
         vm.prank(user1);
         campaign.donate{value: 5 ether}();
+        assertEq(address(campaign).balance, 5 ether, "Contract should have received funds");
+        console.log("Contract Balance: ", address(campaign).balance);
+        console.log("Funds Raised: ", campaign.fundsRaised());
+
+
 
         vm.warp(block.timestamp + 2 days); // Move time past deadline
 
