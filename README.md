@@ -56,7 +56,7 @@ This contract represents a crowdfunding campaign. It allows users to donate fund
 ## UML Diagram
 Below is a UML representation of the contract relationships and interactions:
 
-![UML Diagram]([path/to/uml-diagram.png](https://github.com/officialcmg/decentralfund-foundry/blob/main/crowdfundinguml.svg))
+[UML Diagram](https://github.com/officialcmg/decentralfund-foundry/blob/main/crowdfundinguml.svg)
 
 ## Deployment
 
