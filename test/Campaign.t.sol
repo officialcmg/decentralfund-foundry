@@ -1,8 +1,9 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.26;
 
-import "forge-std/Test.sol"; // Foundry test framework
-import "../src/Campaign.sol";
+import { Test } from "forge-std/Test.sol"; // Foundry test framework
+import { Campaign } from "../src/Campaign.sol";
+import { console } from "forge-std/console.sol";
 
 contract CampaignTest is Test {
     Campaign campaign;

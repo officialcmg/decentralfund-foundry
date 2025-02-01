@@ -1,9 +1,9 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.26;
 
-import "forge-std/Test.sol"; // Foundry test framework
-import "../src/Crowdfunding.sol";
-import "../src/Campaign.sol";
+import { Test } from "forge-std/Test.sol"; // Foundry test framework
+import { CrowdfundingFactory } from "../src/Crowdfunding.sol";
+import { Campaign } from "../src/Campaign.sol";
 
 contract CrowdfundingFactoryTest is Test {
     CrowdfundingFactory factory;
