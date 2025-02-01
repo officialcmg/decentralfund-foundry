@@ -1,66 +1,83 @@
-## Foundry
+# Crowdfunding Smart Contract
 
-**Foundry is a blazing fast, portable and modular toolkit for Ethereum application development written in Rust.**
+## Overview
+This project implements a decentralized crowdfunding platform using Solidity smart contracts. It consists of two main contracts:
+- **CrowdfundingFactory**: A factory contract responsible for creating and managing individual crowdfunding campaigns.
+- **Campaign**: A contract representing an individual crowdfunding campaign with donation, refund, and withdrawal functionalities.
 
-Foundry consists of:
+## Architecture
+The project follows a factory-based design pattern, where the `CrowdfundingFactory` deploys new `Campaign` instances. Each campaign is a standalone smart contract with its own state and logic.
 
--   **Forge**: Ethereum testing framework (like Truffle, Hardhat and DappTools).
--   **Cast**: Swiss army knife for interacting with EVM smart contracts, sending transactions and getting chain data.
--   **Anvil**: Local Ethereum node, akin to Ganache, Hardhat Network.
--   **Chisel**: Fast, utilitarian, and verbose solidity REPL.
+### Contracts
 
-## Documentation
+#### 1. CrowdfundingFactory
+This contract acts as the entry point for campaign creation. It stores deployed campaign instances and provides functions to retrieve them.
 
-https://book.getfoundry.sh/
+- **State Variables:**
+  - `owner`: The address of the factory owner.
+  - `campaigns`: A list of deployed `Campaign` contract addresses.
 
-## Usage
+- **Functions:**
+  - `createCampaign(uint256 _goal, uint256 _deadline, string _title, string _description)`: Deploys a new `Campaign` contract.
+  - `getCampaigns()`: Returns a list of deployed campaign contract addresses.
 
-### Build
+- **Events:**
+  - `CampaignCreated`: Emitted when a new campaign is created.
 
-```shell
-$ forge build
+#### 2. Campaign
+This contract represents a crowdfunding campaign. It allows users to donate funds and provides refund mechanisms if the goal is not reached by the deadline.
+
+- **State Variables:**
+  - `creator`: The campaign owner.
+  - `goal`: The fundraising goal in ETH.
+  - `deadline`: The campaign deadline timestamp.
+  - `fundsRaised`: The total funds collected.
+  - `isGoalReached`: Whether the goal has been met.
+  - `isRefundsEnabled`: Whether refunds have been enabled.
+  - `contributors`: A list of contributors.
+  - `contributions`: Mapping of contributors and their respective donations.
+
+- **Functions:**
+  - `donate()`: Allows users to donate ETH to the campaign.
+  - `withdrawFunds()`: Allows the creator to withdraw funds if the goal is met.
+  - `enableRefunds()`: Allows the creator to enable refunds.
+  - `refundAllContributors()`: Refunds all contributors.
+  - `claimRefund()`: Allows an individual contributor to claim a refund.
+  - `updateTitleAndDescription(string _title, string _description)`: Updates the campaign title and description.
+  - `getContributionByAddress(address _address)`: Returns the amount contributed by a specific address.
+
+- **Events:**
+  - `ContributorDonates`: Emitted when a user donates.
+  - `ContributorRefunded`: Emitted when a contributor receives a refund.
+  - `FundsWithdrawn`: Emitted when funds are withdrawn by the creator.
+  - `RefundsEnabled`: Emitted when refunds are enabled.
+  - `RefundedAllContributors`: Emitted when all contributors are refunded.
+
+## UML Diagram
+Below is a UML representation of the contract relationships and interactions:
+
+![UML Diagram]([path/to/uml-diagram.png](https://github.com/officialcmg/decentralfund-foundry/blob/main/crowdfundinguml.svg))
+
+## Deployment
+
+To deploy the `CrowdfundingFactory` contract:
+```sh
+forge script script/Crowdfunding.s.sol:CrowdfundingScript \
+  --rpc-url https://rpc.sepolia-api.lisk.com \
+  --broadcast
 ```
 
-### Test
-
-```shell
-$ forge test
+To verify the contract on Lisk Sepolia Blockscout:
+```sh
+forge create --rpc-url https://rpc.sepolia-api.lisk.com \
+  --etherscan-api-key 123 \
+  --verify \
+  --verifier blockscout \
+  --verifier-url https://sepolia-blockscout.lisk.com/api \
+  --private-key $PRIVATE_KEY \
+  src/Crowdfunding.sol:CrowdfundingFactory
 ```
 
-### Format
+## License
+This project is licensed under the MIT License.
 
-```shell
-$ forge fmt
-```
-
-### Gas Snapshots
-
-```shell
-$ forge snapshot
-```
-
-### Anvil
-
-```shell
-$ anvil
-```
-
-### Deploy
-
-```shell
-$ forge script script/Counter.s.sol:CounterScript --rpc-url <your_rpc_url> --private-key <your_private_key>
-```
-
-### Cast
-
-```shell
-$ cast <subcommand>
-```
-
-### Help
-
-```shell
-$ forge --help
-$ anvil --help
-$ cast --help
-```
